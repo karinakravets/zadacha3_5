@@ -1,36 +1,32 @@
-import java.util.*
+//Создать приложение, в котором пользователь вводит массив из различных слов.
+//На выходе приложение должно показать слова сгруппированные по признаку
+//"состоят из одинаковых букв". Например, на входе ["eat", "tea", "tan", "ate", "nat", "bat"].
+// Получаем группы:
+//"ate", "eat", "tea"
+//"nat", "tan"
+//"bat"
 
 fun main() {
-    val scanner = Scanner(System.`in`)
+println("Введите слова, разделенные пробелами:")
+val input = readLine()
+val words = input?.split(" ")// разбитие строки на отдельные слова с пробелами
+if (words != null) {
+val wordGroups = groupWords(words)
 
-    println("Введите слова через пробел:")
-    val input = scanner.nextLine()
-
-    val words = input.split(" ").toTypedArray()
-
-    val wordGroups = groupAnagrams(words)
-
-    for (group in wordGroups) {
-        println(group.joinToString(", "))
-    }
+for ((_, group) in wordGroups) { //_ -это пустое значение, т.к. ключ нам не нужен, нужно только значение
+println(group.joinToString(", "))
+}
+}
+}
+fun groupWords(words: List): Map> {
+val wordGroups = mutableMapOf>()
+for (word in words) {
+val key = word.toCharArray().sorted().joinToString("")
+if (!wordGroups.containsKey(key)) {
+wordGroups[key] = mutableListOf()
+}
+wordGroups[key]?.add(word)
 }
 
-fun groupAnagrams(words: Array<String>): List<List<String>> {
-    val wordGroups = ArrayList<List<String>>()
-
-    val groupedWords = HashMap<String, ArrayList<String>>()
-
-    for (word in words) {
-        val sortedWord = word.toCharArray().sorted().toString()
-        if (!groupedWords.containsKey(sortedWord)) {
-            groupedWords[sortedWord] = ArrayList()
-        }
-        groupedWords[sortedWord]?.add(word)
-    }
-
-    for (entry in groupedWords.entries) {
-        wordGroups.add(entry.value)
-    }
-
-    return wordGroups
+return wordGroups
 }
