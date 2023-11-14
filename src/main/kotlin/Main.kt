@@ -4,7 +4,7 @@
 //"bat"
 
 fun main() {
-    val input = arrayOf("eat", "tea", "tan", "ate", "nat", "bat")
+    val input = readLine()!!.split(" ").toTypedArray()
     val groups = groupAnagrams(input)
     for (group in groups) {
         println(group.joinToString(", "))
@@ -14,7 +14,6 @@ fun main() {
 fun groupAnagrams(words: Array<String>): List<List<String>> {
     val groups = mutableListOf<List<String>>()
     val map = mutableMapOf<String, MutableList<String>>()
-
     for (word in words) {
         val sortedWord = word.toCharArray().sorted().joinToString("")
         if (map.containsKey(sortedWord)) {
@@ -23,10 +22,8 @@ fun groupAnagrams(words: Array<String>): List<List<String>> {
             map[sortedWord] = mutableListOf(word)
         }
     }
-
     for (entry in map) {
         groups.add(entry.value)
     }
-
     return groups
 }
